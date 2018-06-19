@@ -31,7 +31,7 @@ double dt = 0.1;
 const double Lf = 2.67;
 
 // Reference values we want our car to follow
-double ref_v = 50;
+double ref_v = 75;
 double ref_cet = 0;
 double ref_epsi = 0;
 
