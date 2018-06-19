@@ -5,17 +5,18 @@
 
 using CppAD::AD;
 
-size_t N = 10;
-double dt = 0.2;
+// TODO: Set the timestep length and duration
+size_t N = 7;
+double dt = 0.1;
 
 // Cost weights
-double c_cte = 2000;
-double c_epsi = 2000;
-double c_v = 10;
-double c_delta = 100;
-double c_a = 5;
-double c_s_delta = 50;
-double c_s_a = 50;
+double c_cte = 20;
+double c_epsi = 20;
+double c_v = 5;
+double c_delta = 500;
+double c_a = 500;
+double c_s_delta = 500;
+double c_s_a = 500;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -30,7 +31,7 @@ double c_s_a = 50;
 const double Lf = 2.67;
 
 // Reference values we want our car to follow
-double ref_v = 20;
+double ref_v = 50;
 double ref_cet = 0;
 double ref_epsi = 0;
 
@@ -55,7 +56,7 @@ class FG_eval {
 
   typedef CPPAD_TESTVECTOR(AD<double>) ADvector;
   void operator()(ADvector& fg, const ADvector& vars) {
-    // implement MPC
+    // TODO: implement MPC
     // `fg` a vector of the cost constraints, `vars` is a vector of variable values (state & actuators)
     // NOTE: You'll probably go back and forth between this function and
     // the Solver function below.
@@ -66,7 +67,7 @@ class FG_eval {
     //Update Cost function
 
     // Reference State Cost
-    // Define the cost related the reference state and
+    // TODO: Define the cost related the reference state and
     // any anything you think may be beneficial.
 
     // cte, epsi and velocity control
@@ -140,7 +141,7 @@ class FG_eval {
      // This is also CppAD can compute derivatives and pass
      // these to the solver.
 
-     // Setup the rest of the model constraints
+     // TODO: Setup the rest of the model constraints
      fg[1 + x_start + t] = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
      fg[1 + y_start + t] = y1 - (y0 + v0 * CppAD::sin(psi0) * dt);
      fg[1 + psi_start + t] = psi1 - (psi0 + v0/Lf * delta0 * dt);
@@ -173,13 +174,13 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   const double epsi = state[5];
 
 
-  // Set the number of model variables (includes both states and inputs).
+  // TODO: Set the number of model variables (includes both states and inputs).
   // For example: If the state is a 4 element vector, the actuators is a 2
   // element vector and there are 10 timesteps. The number of variables is:
   //
   // 4 * 10 + 2 * 9
   size_t n_vars = N * 6 + (N - 1) * 2;
-  // Set the number of constraints
+  // TODO: Set the number of constraints
   size_t n_constraints = N * 6;
 
   // Initial value of the independent variables.
@@ -199,7 +200,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   Dvector vars_lowerbound(n_vars);
   Dvector vars_upperbound(n_vars);
-  // Set lower and upper limits for variables.
+  // TODO: Set lower and upper limits for variables.
   // Set all non-actuators upper and lowerlimits
   // to the max negative and positive values.
   for (int i = 0; i < delta_start; i++) {
@@ -282,7 +283,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   auto cost = solution.obj_value;
   std::cout << "Cost " << cost << std::endl;
 
-  // Return the first actuator values. The variables can be accessed with
+  // TODO: Return the first actuator values. The variables can be accessed with
   // `solution.x[i]`.
   //
   // {...} is shorthand for creating a vector, so auto x1 = {1.0,2.0}

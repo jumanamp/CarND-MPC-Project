@@ -16,6 +16,7 @@ using json = nlohmann::json;
 constexpr double pi() { return M_PI; }
 double deg2rad(double x) { return x * pi() / 180; }
 double rad2deg(double x) { return x * 180 / pi(); }
+double mphtomps(double x) { return x * 0.44704; }
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
@@ -92,7 +93,7 @@ int main(int argc, char **argv) {
           double px = j[1]["x"]; // x position
           double py = j[1]["y"]; // y position
           double psi = j[1]["psi"]; // heading angle
-          double v = j[1]["speed"]; // velocity
+          double v = mphtomps(j[1]["speed"]); // velocity, convert from miles per hour to meter per second
           double steer_value = j[1]["steering_angle"]; // steering angle
           double throttle_value = j[1]["throttle"]; // throttle
 
@@ -132,7 +133,7 @@ int main(int argc, char **argv) {
            double epsi = -atan(poly_coeff[1]);  // p
 
           /*
-          * Calculate steering angle and throttle using MPC.
+          * TODO: Calculate steering angle and throttle using MPC.
           *
           * Both are in between [-1, 1].
           *
