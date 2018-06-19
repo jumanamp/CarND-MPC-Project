@@ -88,13 +88,13 @@ int main(int argc, char **argv) {
     c_s_a     = atof(argv[7]);
   } else {
     // Default Cost weights
-    c_cte = 60;
-    c_epsi = 70;
-    c_v = 20;
-    c_delta = 2000;
-    c_a = 2000;
-    c_s_delta = 3500;
-    c_s_a = 2000;
+    c_cte = 100;
+    c_epsi = 110;
+    c_v = 40;
+    c_delta = 3000;
+    c_a = 3000;
+    c_s_delta = 7000;
+    c_s_a = 7000;
   }
 
   cout << 'done';
