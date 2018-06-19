@@ -67,10 +67,40 @@ Eigen::VectorXd polyfit(Eigen::VectorXd xvals, Eigen::VectorXd yvals,
 }
 
 int main(int argc, char **argv) {
+
   uWS::Hub h;
 
   // MPC is initialized here!
   MPC mpc;
+
+
+  // Variables for cost function Weights
+  double c_cte, c_epsi, c_v, c_delta, c_a, c_s_delta, c_s_a;
+
+  // Check if weights passed as arguments
+  if (argc > 1) {
+    c_cte     = atof(argv[1]);
+    c_epsi    = atof(argv[2]);
+    c_v       = atof(argv[3]);
+    c_delta   = atof(argv[4]);
+    c_a       = atof(argv[5]);
+    c_s_delta = atof(argv[6]);
+    c_s_a     = atof(argv[7]);
+  } else {
+    // Default Cost weights
+    c_cte = 20;
+    c_epsi = 20;
+    c_v = 5;
+    c_delta = 500;
+    c_a = 500;
+    c_s_delta = 500;
+    c_s_a = 500;
+  }
+
+  cout << 'done';
+
+  // Pass Cost function Weights
+  mpc.InitCostWeights(c_cte, c_epsi, c_v, c_delta, c_a, c_s_delta, c_s_a);
 
   h.onMessage([&mpc](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                      uWS::OpCode opCode) {

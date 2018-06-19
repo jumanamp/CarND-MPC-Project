@@ -9,6 +9,11 @@ using namespace std;
 
 class MPC {
  public:
+
+   /*
+   * Cost Function weight vector
+   */
+  std::vector<double> c_weights;
   MPC();
 
   virtual ~MPC();
@@ -19,6 +24,11 @@ class MPC {
 
   // Predict new state using Kinematic Motion model
   void ApplyMotionModel(double &x, double &y, double &psi, double &v, double a, double delta, double dt);
+
+  /*
+  * Initialize MPC Cost Function Weights.
+  */
+  void InitCostWeights(double c_cte, double c_epsi, double c_v, double c_delta, double c_a, double c_s_delta, double c_s_a);
 };
 
 #endif /* MPC_H */

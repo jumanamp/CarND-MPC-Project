@@ -9,14 +9,14 @@ using CppAD::AD;
 size_t N = 7;
 double dt = 0.1;
 
-// Cost weights
-double c_cte = 20;
-double c_epsi = 20;
-double c_v = 5;
-double c_delta = 500;
-double c_a = 500;
-double c_s_delta = 500;
-double c_s_a = 500;
+// // Cost weights
+// double c_cte = 20;
+// double c_epsi = 20;
+// double c_v = 5;
+// double c_delta = 500;
+// double c_a = 500;
+// double c_s_delta = 500;
+// double c_s_a = 500;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -54,6 +54,15 @@ class FG_eval {
   Eigen::VectorXd coeffs;
   FG_eval(Eigen::VectorXd coeffs) { this->coeffs = coeffs; }
 
+  std::vector<double> c_weights_;
+
+  /*
+  * Initialize  Cost Function Weights.
+  */
+  void InitCostWeights(std::vector<double> c_weights) {
+    c_weights_ = c_weights;
+  }
+
   typedef CPPAD_TESTVECTOR(AD<double>) ADvector;
   void operator()(ADvector& fg, const ADvector& vars) {
     // TODO: implement MPC
@@ -72,24 +81,24 @@ class FG_eval {
 
     // cte, epsi and velocity control
     for (int i = 0; i < N; i++) {
-      fg[0] += c_cte * CppAD::pow(vars[cte_start + i], 2); // cte, highest weight
-      fg[0] += c_epsi * CppAD::pow(vars[epsi_start + i], 2); // epsi, highest weight
+      fg[0] += c_weights_[0] * CppAD::pow(vars[cte_start + i], 2); // cte, highest weight
+      fg[0] += c_weights_[1] * CppAD::pow(vars[epsi_start + i], 2); // epsi, highest weight
 
       // Cost function for maintaining velocity and avoid stopping.
       // Note reference velocity is added to form equation
-      fg[0] += c_v * CppAD::pow(vars[v_start + i] - ref_v, 2);
+      fg[0] += c_weights_[2]  * CppAD::pow(vars[v_start + i] - ref_v, 2);
     }
 
     // Initial acceleration and delta_t
     for (int i = 0; i < N - 1; i++) {
-      fg[0] += c_delta * CppAD::pow(vars[delta_start + i], 2);
-      fg[0] += c_a * CppAD::pow(vars[a_start + i], 2);
+      fg[0] += c_weights_[3]  * CppAD::pow(vars[delta_start + i], 2);
+      fg[0] += c_weights_[4]  * CppAD::pow(vars[a_start + i], 2);
     }
 
     // Actuator inputs
     for (int i = 0; i < N - 2; i++) {
-      fg[0] += c_s_delta * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
-      fg[0] += c_s_a * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
+      fg[0] += c_weights_[5]  * CppAD::pow(vars[delta_start + i + 1] - vars[delta_start + i], 2);
+      fg[0] += c_weights_[6]  * CppAD::pow(vars[a_start + i + 1] - vars[a_start + i], 2);
     }
 
     // Setup Constraints
@@ -249,6 +258,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   // object that computes objective and constraints
   FG_eval fg_eval(coeffs);
+  fg_eval.InitCostWeights(c_weights);
 
   //
   // NOTE: You don't have to worry about these options
@@ -313,4 +323,16 @@ void MPC::ApplyMotionModel(double &x, double &y, double &psi, double &v,
     y = y_n;
     v = v_n;
     psi = psi_n;
+}
+
+void MPC::InitCostWeights(double c_cte, double c_epsi, double c_v,
+  double c_delta, double c_a, double c_s_delta, double c_s_a) {
+    // Cost weights
+    c_weights.push_back(c_cte);
+    c_weights.push_back(c_epsi);
+    c_weights.push_back(c_v);
+    c_weights.push_back(c_delta);
+    c_weights.push_back(c_a);
+    c_weights.push_back(c_s_delta);
+    c_weights.push_back(c_s_a);
 }
