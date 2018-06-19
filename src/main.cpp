@@ -91,10 +91,10 @@ int main(int argc, char **argv) {
     c_cte = 100;
     c_epsi = 110;
     c_v = 40;
-    c_delta = 3000;
-    c_a = 3000;
-    c_s_delta = 9000;
-    c_s_a = 9000;
+    c_delta = 2000;
+    c_a = 2000;
+    c_s_delta = 50000;
+    c_s_a = 50000;
   }
 
   cout << 'done';
