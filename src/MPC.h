@@ -28,7 +28,7 @@ class MPC {
   /*
   * Initialize MPC Cost Function Weights.
   */
-  void InitCostWeights(double c_cte, double c_epsi, double c_v, double c_delta, double c_a, double c_s_delta, double c_s_a);
+  void InitCostWeights(double c_cte, double c_epsi, double c_v, double c_delta, double c_a, double c_s_delta, double c_s_a, double c_delta_v);
 };
 
 #endif /* MPC_H */

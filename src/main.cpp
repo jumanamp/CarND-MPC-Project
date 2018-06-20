@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
 
 
   // Variables for cost function Weights
-  double c_cte, c_epsi, c_v, c_delta, c_a, c_s_delta, c_s_a;
+  double c_cte, c_epsi, c_v, c_delta, c_a, c_s_delta, c_s_a, c_delta_v;
 
   // Check if weights passed as arguments
   if (argc > 1) {
@@ -86,6 +86,7 @@ int main(int argc, char **argv) {
     c_a       = atof(argv[5]);
     c_s_delta = atof(argv[6]);
     c_s_a     = atof(argv[7]);
+    c_delta_v = atof(argv[8]);
   } else {
     // Default Cost weights
     c_cte = 60;
@@ -95,12 +96,13 @@ int main(int argc, char **argv) {
     c_a = 1600;
     c_s_delta = 1000000;
     c_s_a = 1000000;
+    c_delta_v = 10000;
   }
 
   cout << 'done';
 
   // Pass Cost function Weights
-  mpc.InitCostWeights(c_cte, c_epsi, c_v, c_delta, c_a, c_s_delta, c_s_a);
+  mpc.InitCostWeights(c_cte, c_epsi, c_v, c_delta, c_a, c_s_delta, c_s_a, c_delta_v);
 
   h.onMessage([&mpc](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                      uWS::OpCode opCode) {

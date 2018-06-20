@@ -6,7 +6,7 @@
 using CppAD::AD;
 
 // TODO: Set the timestep length and duration
-size_t N = 7;
+size_t N = 20;
 double dt = 0.1;
 
 // // Cost weights
@@ -31,7 +31,7 @@ double dt = 0.1;
 const double Lf = 2.67;
 
 // Reference values we want our car to follow
-double ref_v = 75;
+double ref_v = 40;
 double ref_cet = 0;
 double ref_epsi = 0;
 
@@ -93,6 +93,10 @@ class FG_eval {
     for (int i = 0; i < N - 1; i++) {
       fg[0] += c_weights_[3]  * CppAD::pow(vars[delta_start + i], 2);
       fg[0] += c_weights_[4]  * CppAD::pow(vars[a_start + i], 2);
+
+      // heavy steering at higher speed
+      // g[0] += c_weights_[7]  * CppAD::pow(vars[v_start + i] * vars[delta_start + i], 2);
+      
     }
 
     // Actuator inputs
@@ -326,7 +330,7 @@ void MPC::ApplyMotionModel(double &x, double &y, double &psi, double &v,
 }
 
 void MPC::InitCostWeights(double c_cte, double c_epsi, double c_v,
-  double c_delta, double c_a, double c_s_delta, double c_s_a) {
+  double c_delta, double c_a, double c_s_delta, double c_s_a, double c_delta_v) {
     // Cost weights
     c_weights.push_back(c_cte);
     c_weights.push_back(c_epsi);
@@ -335,4 +339,5 @@ void MPC::InitCostWeights(double c_cte, double c_epsi, double c_v,
     c_weights.push_back(c_a);
     c_weights.push_back(c_s_delta);
     c_weights.push_back(c_s_a);
+    c_weights.push_back(c_delta_v);
 }
