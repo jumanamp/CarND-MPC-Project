@@ -84,12 +84,12 @@ Simulator provided values are received by the project code using the  [uWebSocke
 
   * Calculate cross track error by the equation:
   <p align="center">
-  <img src="readme/CTE.png">
+  <img src="readme/cte.png">
   </p>
 
   * Calculate heading angle error by the equation:
   <p align="center">
-  <img src="readme/EPSI.png">
+  <img src="readme/epsi.png">
   </p>
 
 
