@@ -94,8 +94,8 @@ int main(int argc, char **argv) {
     c_v = 3;
     c_delta = 200;
     c_a = 200;
-    c_s_delta = 30000;
-    c_s_a = 30000;
+    c_s_delta = 200000;
+    c_s_a = 200000;
     c_delta_v = 0;
   }
 
